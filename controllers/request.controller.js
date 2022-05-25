@@ -133,7 +133,7 @@ exports.getIncident = async (req, res) => {
     try {
         let {id} = req.params
         let token = req.headers["x-access-token"];
-        let {body} = req
+        let {body} = req;
         if(!token) return template(401, "Token not provided", [], false, res)
 
         jwt.verify(token, process.env.key, (err, decoded) => {
