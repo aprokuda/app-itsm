@@ -23,17 +23,6 @@ require('./routes/role.route')(app);
 require('./routes/request.route')(app);
 // require('')(app);
 
-// app.use('/', function(req, res) {res.send("Hi")})
-
-app.use(express.static(path.join(__dirname, 'build')))
-app.use((req, res) => {
-    res.sendFile(path.join(__dirname, 'build', 'index.html'))
-})
-// 500 - Any server error
-app.use((err, req, res) => {
-    res.sendFile(path.join(__dirname, 'build', 'index.html'))
-})
-
 app.listen(process.env.HOST_PORT, () => {
     console.log("Server start!")
 });

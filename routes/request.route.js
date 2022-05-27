@@ -12,9 +12,13 @@ module.exports = function(app) {
     app.get("/request/getObject/:id?", controller.getRequest);
     app.post("/request/createObject", controller.createRequest);
 
-    app.get("/attachment/getObject", controller.getAttachment);
-    app.post("/attachment/createObject/id", controller.createAttachment);
+    app.get("/attachment/getObject/:id?", controller.getAttachment);
+    app.post("/attachment/createObject/:id", controller.createAttachment);
 
-    app.get("/incident/getObject", controller.getIncident)
+    app.get("/incident/getObject/:id?", controller.getIncident);
     app.post("/incident/createObject", controller.createIncident);
+    app.put("/incident/updateObject/:id", controller.updateIncident);
+
+    app.get("/comment/getObject/:id1/comment/:id2?", controller.getComment);
+    app.post("/comment/createObject/:id", controller.createComment);
 };
