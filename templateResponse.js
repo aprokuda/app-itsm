@@ -1,3 +1,4 @@
+// Шаблон запросов
 const template = (status, message, data, auth, res) => {
     res.status(status).json({
         status: status,

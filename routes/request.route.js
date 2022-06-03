@@ -13,11 +13,7 @@ module.exports = function(app) {
         next();
     });
 
-    app.get("/request/getObject/:id?", controller.getRequest);
-    app.post("/request/createObject", controller.createRequest);
-
-    app.get("/attachment/getObject/:id?", controller.getAttachment);
-    /******************************     API FOR UPLOADING THE FILES     **********************************/
+    /******************************     Storage and multer library for uploading the files     **********************************/
     let storage = multer.diskStorage({
         destination: function (req, file, cb) {
             cb(null, path.join(__dirname + '../../uploads/'))
@@ -25,7 +21,7 @@ module.exports = function(app) {
         filename: function (req, file, cb) {
             cb(null, file.originalname)
         }
-    })
+    });
     let upload = multer({
         storage: storage,
         fileFilter: function (req, file, cb) {
@@ -37,7 +33,13 @@ module.exports = function(app) {
             }
             else { cb("Error: File upload only supports the following filetypes - " + filetypes); }
         }
-    })
+    });
+    //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+    app.get("/request/getObject/:id?", controller.getRequest);
+    app.post("/request/createObject", controller.createRequest);
+
+    app.get("/attachment/getObject/:id?", controller.getAttachment);
     app.post("/attachment/createObject/:id",
         [authJwt.verifyToken,
             (req, res, next) => {
@@ -50,11 +52,22 @@ module.exports = function(app) {
         ],
         controller.createAttachment
     );
-    ///////////////////////////////////////////////////////////////////////////////////
 
     app.get("/incident/getObject/:id?", controller.getIncident);
     app.post("/incident/createObject", controller.createIncident);
     app.put("/incident/updateObject/:id", controller.updateIncident);
+    app.post("/incident/createObject/attachment",
+        [authJwt.verifyToken,
+            (req, res, next) => {
+                upload.any('file')(req, res, (err) => {
+                    var filetypes = /pdf|doc|xml|png|jpg|jpeg|docx|docm|dotx|xps|txt|xlsx|xlsm/;
+                    if(err) return template(500, "Error: File upload only supports the following filetypes - " + filetypes, err.message, true, res);
+                    else next();
+                })
+            }
+        ],
+        controller.createIncidentWithAttachment
+    );
 
     app.get("/comment/getObject/:id1/comment/:id2?", controller.getComment);
     app.post("/comment/createObject/:id", controller.createComment);

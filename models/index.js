@@ -9,7 +9,6 @@ db.sequelize = sequelize;
 /*                                                            MODELS                                                               */
 /***********************************************************************************************************************************/
 db.user = require("./user.model.js")(sequelize, DataTypes);
-db.token = require("./token.model.js")(sequelize, DataTypes);
 db.role = require("./role.model.js")(sequelize, DataTypes);
 
 /***********************************************************************************************************************************/
