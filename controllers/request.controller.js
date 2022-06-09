@@ -173,8 +173,8 @@ exports.getIncident = async (req, res) => {
                                         response: each.fields.customfield_10052,
                                         post_resolution: each.fields.customfield_10053,
                                         review: each.fields.customfield_10054,
-                                        requesttype: textObj.fields.customfield_10010,
-                                        resolutiondate: textObj.fields.resolutiondate,
+                                        requesttype: each.fields.customfield_10010,
+                                        resolutiondate: each.fields.resolutiondate,
                                         timespent: each.fields.timespent,
                                         created: each.fields.created,
                                         updated: each.fields.updated
