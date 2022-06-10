@@ -15,7 +15,7 @@ async function sampleMethod(url, method, body) {
         await fetch(url, {
             method: method,
             headers: {
-                'Authorization': `Basic ${Buffer.from('k.jigitekov@m-lombard.kz:' + process.env.jiraToken).toString('base64')}`,
+                'Authorization': `Basic ${Buffer.from(process.env.jiraEmail + ':' + process.env.jiraToken).toString('base64')}`,
                 'Accept': 'application/json',
                 'Content-Type': 'application/json'
             }
@@ -28,7 +28,7 @@ async function sampleMethod(url, method, body) {
         await fetch(url, {
             method: method,
             headers: {
-                'Authorization': `Basic ${Buffer.from('k.jigitekov@m-lombard.kz:' + process.env.jiraToken).toString('base64')}`,
+                'Authorization': `Basic ${Buffer.from(process.env.jiraEmail + ':' + process.env.jiraToken).toString('base64')}`,
                 'Accept': 'application/json',
                 'Content-Type': 'application/json'
             },
@@ -83,7 +83,7 @@ exports.getAttachment = (req, res) => {
         fetch('https://mklombard.atlassian.net/rest/servicedeskapi/request/ITSAMPLE-27/attachment', {
             method: 'GET',
             headers: {
-                'Authorization': `Basic ${Buffer.from('k.jigitekov@m-lombard.kz:Jg2ihnVIMajoXgKpmKT58D63').toString('base64')}`,
+                'Authorization': `Basic ${Buffer.from(process.env.jiraEmail + ':' + process.env.jiraToken).toString('base64')}`,
                 'Accept': 'application/json',
                 'Content-Type': 'application/json'
             }
@@ -121,7 +121,7 @@ exports.createAttachment = async (req, res) => {
                             method: 'POST',
                             body: form,
                             headers: {
-                                'Authorization': `Basic ${Buffer.from('k.jigitekov@m-lombard.kz:' + process.env.jiraToken).toString('base64')}`,
+                                'Authorization': `Basic ${Buffer.from(process.env.jiraEmail + ':' + process.env.jiraToken).toString('base64')}`,
                                 'Accept': 'application/json',
                                 'X-Atlassian-Token': 'no-check'
                             }
@@ -347,7 +347,7 @@ exports.createIncidentWithAttachment = async (req, res) => {
                                     method: 'POST',
                                     body: form,
                                     headers: {
-                                        'Authorization': `Basic ${Buffer.from('k.jigitekov@m-lombard.kz:' + process.env.jiraToken).toString('base64')}`,
+                                        'Authorization': `Basic ${Buffer.from(process.env.jiraEmail + ':' + process.env.jiraToken).toString('base64')}`,
                                         'Accept': 'application/json',
                                         'X-Atlassian-Token': 'no-check'
                                     }
