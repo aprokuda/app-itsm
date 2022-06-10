@@ -121,11 +121,7 @@ exports.createAttachment = async (req, res) => {
                             method: 'POST',
                             body: form,
                             headers: {
-<<<<<<< HEAD
                                 'Authorization': `Basic ${Buffer.from(process.env.jiraEmail + ':' + process.env.jiraToken).toString('base64')}`,
-=======
-                                'Authorization': `Basic ${Buffer.from('k.jigitekov@m-lombard.kz:' + process.env.jiraToken).toString('base64')}`,
->>>>>>> b1e074a651351ced519d4fe82fde9457af6f75ab
                                 'Accept': 'application/json',
                                 'X-Atlassian-Token': 'no-check'
                             }
@@ -177,13 +173,8 @@ exports.getIncident = async (req, res) => {
                                         response: each.fields.customfield_10052,
                                         post_resolution: each.fields.customfield_10053,
                                         review: each.fields.customfield_10054,
-<<<<<<< HEAD
                                         requesttype: each.fields.customfield_10010,
                                         resolutiondate: each.fields.resolutiondate,
-=======
-                                        requesttype: textObj.fields.customfield_10010,
-                                        resolutiondate: textObj.fields.resolutiondate,
->>>>>>> b1e074a651351ced519d4fe82fde9457af6f75ab
                                         timespent: each.fields.timespent,
                                         created: each.fields.created,
                                         updated: each.fields.updated
@@ -356,11 +347,7 @@ exports.createIncidentWithAttachment = async (req, res) => {
                                     method: 'POST',
                                     body: form,
                                     headers: {
-<<<<<<< HEAD
                                         'Authorization': `Basic ${Buffer.from(process.env.jiraEmail + ':' + process.env.jiraToken).toString('base64')}`,
-=======
-                                        'Authorization': `Basic ${Buffer.from('k.jigitekov@m-lombard.kz:' + process.env.jiraToken).toString('base64')}`,
->>>>>>> b1e074a651351ced519d4fe82fde9457af6f75ab
                                         'Accept': 'application/json',
                                         'X-Atlassian-Token': 'no-check'
                                     }
