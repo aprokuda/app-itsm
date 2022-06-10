@@ -212,7 +212,7 @@ exports.getIncident = async (req, res) => {
                                         updated: textObj.fields.updated
                                     }
                                 }
-                            template(200, "", textObj, true, res);
+                            template(200, "", result, true, res);
                         }
                     }
                     catch(e) { template(500, e.message, [], true, res) }
