@@ -2,6 +2,8 @@ const fetch = require('node-fetch');
 const axios = require('axios');
 const FormData = require('form-data');
 const fs = require('fs');
+// import BX24 from 'bx24-api';
+const BX24 = require("bx24");
 const path = require("path");
 const template = require('../templateResponse');
 const jwt = require("jsonwebtoken");
@@ -452,7 +454,94 @@ exports.createComment = async (req, res) => {
 
                         let val = await sampleMethod('https://mklombard.atlassian.net/rest/api/3/issue/' + id + '/comment', 'POST', bodyData)
                         const textObj = JSON.parse(val);
-                        template(200, "", textObj, true, res);
+                        if(textObj.errorMessages) template(500, textObj, [], true, res);
+                        else template(200, "", textObj, true, res);
+                    }
+                    catch(e) { template(500, e.message, [], true, res) }
+                }).catch(err => template(500, err.message, [], true, res));
+        });
+    }
+    catch(e) { template(500, e.message, [], true, res) }
+};
+
+exports.createBitrix = async (req, res) => {
+    try {
+        let {id} = req.params
+        let {body} = req
+        let token = req.headers["x-access-token"];
+        if(!token) return template(401, "Token not provided", [], false, res)
+
+        jwt.verify(token, process.env.key, (err, decoded) => {
+            if(err) return template(401, "Unauthorised", [],false, res)
+            User.findByPk(decoded.id)
+                .then(async user => {
+                    if(!user) template(404, "User not found", [], true, res)
+                    try {
+                        // BX24.callMethod('user.add', {"EMAIL": "newuser@example.com"});
+                        // BX24.callMethod('user.get', {"ID": 980});
+                        // BX24.callMethod('user.fields');
+                        // template(200, "", textObj, true, res);
+
+                        // const url = `https://bitrix-test.m-lombard.kz/rest/${idAuth}/${keyAuth}/crm.lead.add.json`;
+                        // const url = `https://portal.m-lombard.kz/rest/user.get.json?ID=1&auth=7790oqv2idpnnn3x38dfftgl7ztih3n8`;
+                        const url = `https://portal.m-lombard.kz/rest/4714/jbhyuxeaz1rbv4y9/profile.json`;
+                        // const url = `https://portal.m-lombard.kz/rest/4714/jbhyuxeaz1rbv4y9/user.get.json`;
+                        let data = {
+                            fields: {
+                                TITLE: "",
+                                NAME: "Clark",
+                                STATUS_ID: "20",
+                                OPENED: "20",
+                                LAST_NAME: "",
+                                SOURCE_ID: "",
+                                POST: "",
+                                BIRTHDATE: "",
+                                UF_CRM_KOMMENTARII: '',
+                                UF_CRM_1545200238: '216', // тип лида
+                                PHONE: [{
+                                    VALUE: "",
+                                    VALUE_TYPE: "WORK"
+                                }],
+                                EMAIL: [{
+                                    VALUE_TYPE: "WORK",
+                                    VALUE: "",
+                                }],
+                                WEB: [{
+                                    VALUE_TYPE: "WORK",
+                                    VALUE: "",
+                                }]
+                            },
+                            params: {
+                                "REGISTER_SONET_EVENT": "Y"
+                            }
+                        }
+                        
+                        await fetch(url, {
+                            method: 'GET',
+                            headers: {
+                                'Accept': 'application/json',
+                                'Content-Type': 'application/json'
+                            }
+                            // body: JSON.stringify({ fields: data.fields })
+                        })
+                        .then(function (response) {
+                            // loader.classList.add("hiden");
+                            // success.classList.remove("hiden");
+                            // return console.log('Request succeeded', response.json());
+                            let result = {
+                                status: response.status,
+                                text: response.statusText
+                            }
+                            template(200, "", result, true, res);
+                        })
+                        .catch(function (error) {
+                            // loader.classList.add("hiden");
+                            // fail.classList.remove("hiden");
+                            // console.log('Request failed', error);
+                            template(200, error, [], true, res);
+                        });
+
+                        // template(200, "", textObj, true, res);
                     }
                     catch(e) { template(500, e.message, [], true, res) }
                 }).catch(err => template(500, err.message, [], true, res));

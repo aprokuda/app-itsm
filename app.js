@@ -4,6 +4,7 @@ const app = express();
 const cors = require('cors');
 const path = require('path');
 const template = require('./templateResponse');
+const initial = require("./other/instaldb");
 const bodyParser = require("body-parser");
 app.use(bodyParser.json({ limit: '50kb' }))
 app.use(bodyParser.urlencoded({ extended: true, limit: '50kb' }))
@@ -19,6 +20,7 @@ db.sequelize.sync();
 // Строки для полного изменения БД, сохраняя при этом уже существующие данные
 // db.sequelize.sync({ alter: true }).then(() => {       // alter: true,     force: false
 //    console.log('Altered and Re-synced Database');
+//    initial();
 // });
 
 ////////////////////    ROUTES      //////////////////////

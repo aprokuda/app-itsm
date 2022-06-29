@@ -71,4 +71,6 @@ module.exports = function(app) {
 
     app.get("/comment/getObject/:id1/comment/:id2?", [authJwt.verifyToken], controller.getComment);
     app.post("/comment/createObject/:id", [authJwt.verifyToken], controller.createComment);
+
+    app.post("/bitrix/createObject", [authJwt.verifyToken], controller.createBitrix);
 };
