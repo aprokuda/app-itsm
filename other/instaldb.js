@@ -16,15 +16,12 @@ function initial() {
             name: "admin",
             surname: "admin",
             patronymic: "",
-            password: bcrypt.hashSync("admin", 8),
-            phone: "77770001100",
             email: "",
+            phone: "77770001100",
+            password: bcrypt.hashSync("admin", 8),
             roleId: 3
         })
     }, 100)
-    setTimeout(() => {
-    
-    }, 200)
     /***********************   ROLE   ***************************/
     setTimeout(() => {
         Role.create({
