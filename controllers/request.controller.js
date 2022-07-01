@@ -163,8 +163,8 @@ exports.getIncident = async (req, res) => {
                                     fields: {
                                         statuscategorychangedate: each.fields.statuscategorychangedate,
                                         summary: each.fields.summary,
-                                        description: each.fields.description,
-                                        status: each.fields.status,
+                                        description: each.fields.description.content.map(item => item.content.map(item => item.text)[0])[0],
+                                        status: each.fields.status.name,
                                         issuetype: each.fields.issuetype,
                                         priority: each.fields.priority,
                                         duedate: each.fields.duedate,
@@ -187,6 +187,14 @@ exports.getIncident = async (req, res) => {
                         else {
                             let val = await sampleMethod('https://mklombard.atlassian.net/rest/api/3/issue/' + id, 'GET')
                             const textObj = JSON.parse(val);
+                            textObj.fields.description = textObj.fields.description.content.map(item => item.content.map(item => item.text)[0])[0];
+                            textObj.fields.attachment = textObj.fields.attachment.map(item => ({id: item.id, filename: item.filename, created: item.created, author: item.author.displayName}));
+                            for(let each of textObj.fields.comment.comments) {
+                                each.author = each.author.displayName;
+                                each.updateAuthor = each.updateAuthor.displayName;
+                                each.body = each.body.content.map(item => item.content.map(item => item.text)[0])[0];
+                            }
+
                             let result = {
                                     id: textObj.id,
                                     key: textObj.key,
@@ -194,7 +202,7 @@ exports.getIncident = async (req, res) => {
                                         statuscategorychangedate: textObj.fields.statuscategorychangedate,
                                         summary: textObj.fields.summary,
                                         description: textObj.fields.description,
-                                        status: textObj.fields.status,
+                                        status: textObj.fields.status.name,
                                         attachment: textObj.fields.attachment,
                                         comment: textObj.fields.comment,
                                         issuetype: textObj.fields.issuetype,
@@ -212,7 +220,7 @@ exports.getIncident = async (req, res) => {
                                         updated: textObj.fields.updated
                                     }
                                 }
-                            template(200, "", textObj, true, res);
+                            template(200, "", result, true, res);
                         }
                     }
                     catch(e) { template(500, e.message, [], true, res) }
@@ -388,11 +396,19 @@ exports.getComment = async (req, res) => {
                         if(!id) {
                             let val = await sampleMethod('https://mklombard.atlassian.net/rest/api/3/issue/' + req.params.id1 + '/comment', 'GET')
                             const textObj = JSON.parse(val);
+                            for(let each of textObj.comments) {
+                                each.author = each.author.displayName;
+                                each.updateAuthor = each.updateAuthor.displayName;
+                                each.body = each.body.content.map(item => item.content.map(item => item.text)[0])[0];
+                            }
                             template(200, "", textObj, true, res);
                         }
                         else {
                             let val = await sampleMethod('https://mklombard.atlassian.net/rest/api/3/issue/' + req.params.id1 + '/comment/' + id, 'GET')
                             const textObj = JSON.parse(val);
+                            textObj.author = textObj.author.displayName;
+                            textObj.updateAuthor = textObj.updateAuthor.displayName;
+                            textObj.body = textObj.body.content.map(item => item.content.map(item => item.text)[0])[0];
                             template(200, "", textObj, true, res)
                         }
                     }

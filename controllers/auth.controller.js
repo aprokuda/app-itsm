@@ -7,14 +7,13 @@ let template = require('../templateResponse')
 exports.signup = (req, res) => {
     // Save User to Database
     try {
-        User.create({
-            phone: req.body.phone,
-            password: bcrypt.hashSync(req.body.password, 8),
-            roleId:req.body.role===undefined ?1:req.body.role
-            })
+        let {body} = req
+        body.password = bcrypt.hashSync(body.password, 8)
+        body.roleId = body.roleId !== undefined ? body.roleId: 1
+        User.create(body)
             .then(user => {
-                if (user) template(200, "User has been successfully registered",[],false, res)
-                else template(500, "",[],false, res)
+                if (user) template(200, "User has been successfully registered!",[],false, res)
+                else template(400, "",[],false, res)
             })
             .catch(err => { template(500, err.message,[],false,res) });
     }

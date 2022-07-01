@@ -36,10 +36,10 @@ module.exports = function(app) {
     });
     //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-    app.get("/request/getObject/:id?", controller.getRequest);
-    app.post("/request/createObject", controller.createRequest);
+    app.get("/request/getObject/:id?", [authJwt.verifyToken], controller.getRequest);
+    app.post("/request/createObject", [authJwt.verifyToken], controller.createRequest);
 
-    app.get("/attachment/getObject/:id?", controller.getAttachment);
+    app.get("/attachment/getObject/:id?", [authJwt.verifyToken], controller.getAttachment);
     app.post("/attachment/createObject/:id",
         [authJwt.verifyToken,
             (req, res, next) => {
@@ -53,9 +53,9 @@ module.exports = function(app) {
         controller.createAttachment
     );
 
-    app.get("/incident/getObject/:id?", controller.getIncident);
-    app.post("/incident/createObject", controller.createIncident);
-    app.put("/incident/updateObject/:id", controller.updateIncident);
+    app.get("/incident/getObject/:id?", [authJwt.verifyToken], controller.getIncident);
+    app.post("/incident/createObject", [authJwt.verifyToken], controller.createIncident);
+    app.put("/incident/updateObject/:id", [authJwt.verifyToken], controller.updateIncident);
     app.post("/incident/createObject/attachment",
         [authJwt.verifyToken,
             (req, res, next) => {
@@ -69,6 +69,6 @@ module.exports = function(app) {
         controller.createIncidentWithAttachment
     );
 
-    app.get("/comment/getObject/:id1/comment/:id2?", controller.getComment);
-    app.post("/comment/createObject/:id", controller.createComment);
+    app.get("/comment/getObject/:id1/comment/:id2?", [authJwt.verifyToken], controller.getComment);
+    app.post("/comment/createObject/:id", [authJwt.verifyToken], controller.createComment);
 };

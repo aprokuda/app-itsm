@@ -106,14 +106,15 @@ exports.objectUpdate = (req, res) => {
                                     }
                                     else {
                                         try {
-                                            if(body.email !== user.dataValues.email && body.email !== "") {
+                                            if(body.email !== user.dataValues.email && body.email !== "" && body.email !== undefined && body.email !== null) {
                                                 let DBemail = await User.findAll({where: {email: body.email}})
                                                 if(DBemail.length > 0) {
                                                     template(409, "Email already exists", [], true, res)
                                                     return false;
                                                 }
                                             }
-                                            if(body.oldpassword && body.password) {
+                                            if(body.password !== user.dataValues.password && body.password !== "" && body.password !== undefined && body.password !== null) {
+                                            // if(body.oldpassword && body.password) {
                                                 let passwordIsValid = bcrypt.compareSync(body.oldpassword, user.password);
                                                 if(passwordIsValid) body.password = bcrypt.hashSync(body.password, 8)
                                                 else {
@@ -143,14 +144,15 @@ exports.objectUpdate = (req, res) => {
                             User.findByPk(id)
                                 .then(async user => {
                                     try {
-                                        if(body.email !== user.dataValues.email && body.email !== "") {
+                                        if(body.email !== user.dataValues.email && body.email !== "" && body.email !== undefined && body.email !== null) {
                                             let emailDatabase = await User.findAll({where: {email: body.email}})
                                             if (emailDatabase.length > 0) {
                                                 template(409, "Email already exists", [], true, res)
                                                 return false;
                                             }
                                         }
-                                        if(body.oldpassword && body.password) {
+                                        if(body.password !== user.dataValues.password && body.password !== "" && body.password !== undefined && body.password !== null) {
+                                        // if(body.oldpassword && body.password) {
                                             let passwordIsValid = bcrypt.compareSync(body.oldpassword, user.password);
                                             if (passwordIsValid) body.password = bcrypt.hashSync(body.password, 8)
                                             else {
