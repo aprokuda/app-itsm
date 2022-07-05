@@ -5,7 +5,7 @@ cp /home/docker/projects/.env /home/docker/projects/app-itsm/
 
 cp /home/docker/projects/app-itsm/infra/Dockerfile /home/docker/projects/app-itsm/
 
-cd home/docker/projects/app-itsm
+cd /home/docker/projects/app-itsm
 
 docker build . -t back-itsm
 
